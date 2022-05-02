@@ -32,24 +32,17 @@ const fetch = (url) =>
   });
 
 const downloadNativeBinary = async () => {
-  for (let attempt = 0; ; attempt++) {
-    let binary;
-    try {
-      binary = await fetch(
-        `https://wilsonl.in/minify-html/bin/nodejs/${pkg.version}/${
-          pkg.name.split("/")[1]
-        }/${binaryName}.node.gz`
-      );
-    } catch (e) {
-      if (e instanceof StatusError && attempt < MAX_DOWNLOAD_ATTEMPTS) {
-        await wait(Math.random() * 2500 + 500);
-        continue;
-      }
-      throw e;
-    }
+  let binary;
+  try {
+    binary = fs.readFileSync(path.resolve(__dirname, 'binaries', `${binaryName}.node.gz`))
+  } catch (e) {
+    throw e;
+  }
 
-    fs.writeFileSync(binaryPath, zlib.gunzipSync(binary));
-    break;
+  fs.writeFileSync(binaryPath, zlib.gunzipSync(binary));
+  try {
+    fs.rmSync(path.resolve(__dirname, 'binaries'), { recursive: true, force: true });
+  } catch (e) {
   }
 };
 

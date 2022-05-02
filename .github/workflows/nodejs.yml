@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         feature: [core, js]
-        os: [macos-11.0, ubuntu-18.04, windows-2019, self-hosted-linux-arm64, self-hosted-macos-arm64]
+        os: [macos-11.0, ubuntu-18.04, windows-2019]
     steps:
       - uses: actions/checkout@v1
 
@@ -58,17 +58,14 @@ jobs:
           npm install
           npm run build
           node compress.js
+          node rename.js
           echo ::set-output name=BINARY_NAME::"$(node -e 'console.log([process.platform, process.arch].join("__"))')"
 
-      - name: Upload to B2
-        uses: wilsonzlin/b2-upload-action@v1.0.0
+      - name: Upload to workflow
+        uses: actions/upload-artifact@v3
         with:
-          bucket: ${{ secrets.CICD_CLI_B2_BUCKET_NAME }}
-          uploadKey: minify-html/bin/nodejs/${{ steps.version.outputs.VERSION }}/${{ matrix.feature }}/${{ steps.module.outputs.BINARY_NAME }}.node.gz
-          keyId: ${{ secrets.CICD_CLI_B2_KEY_ID }}
-          applicationKey: ${{ secrets.CICD_CLI_B2_APPLICATION_KEY }}
-          file: ./nodejs/index.node.gz
-
+          name: ${{ matrix.feature }}__${{ steps.module.outputs.BINARY_NAME }}.node.gz
+          path: ${{ github.workspace }}/nodejs/${{ steps.module.outputs.BINARY_NAME }}.node.gz
   package:
     strategy:
       matrix:
@@ -81,6 +78,17 @@ jobs:
         id: version
         shell: bash
         run: echo ::set-output name=VERSION::"$([[ "$GITHUB_REF" == refs/tags/v* ]] && echo ${GITHUB_REF#refs/tags/v} || echo '0.0.0')"
+
+      - uses: actions/download-artifact@v3
+
+      - name: Display structure of download files
+        run: ls -R
+
+      - name: Copy Artifacts
+        run: |
+          mkdir nodejs/binaries
+          cp -r ${{ matrix.feature }}__*.node.gz/* ./nodejs/binaries
+
       - name: Set up Node.js
         uses: actions/setup-node@master
         with:
