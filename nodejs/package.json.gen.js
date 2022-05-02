@@ -4,9 +4,10 @@ const common = {
   version: "0.8.0",
   main: "index.js",
   types: "index.d.ts",
-  files: ["cli.js", "postinstall.js", "index.d.ts", "index.js"],
+  files: ["cli.js", "postinstall.js", "index.d.ts", "index.js", "binaries"],
   scripts: {
     build: "node-gyp build && shx mv build/Release/index.node index.node",
+    install: "",
     clean:
       "cd native && cargo clean && cd .. && node-gyp clean && node-gyp configure && shx rm -f index.node",
     postinstall: "node postinstall.js",
@@ -38,14 +39,14 @@ const common = {
 
 const specifics = {
   core: {
-    name: "@minify-html/core",
+    name: "@min-html/core",
     description: "Extremely fast and smart HTML minifier",
     bin: {
       "minify-html-core": "./cli.js",
     },
   },
   js: {
-    name: "@minify-html/js",
+    name: "@min-html/js",
     description: "Extremely fast and smart HTML + JS + CSS minifier",
     bin: {
       "minify-html": "./cli.js",
