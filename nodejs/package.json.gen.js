@@ -1,10 +1,10 @@
 const fs = require("fs");
 
 const common = {
-  version: "0.8.2",
+  version: "0.8.3",
   main: "index.js",
   types: "index.d.ts",
-  files: ["cli.js", "postinstall.js", "index.d.ts", "index.js", "binaries"],
+  files: ["postinstall.js", "index.d.ts", "index.js", "binaries"],
   scripts: {
     build: "node-gyp build && shx mv build/Release/index.node index.node",
     clean:
@@ -39,17 +39,11 @@ const common = {
 const specifics = {
   core: {
     name: "@min-html/core",
-    description: "Extremely fast and smart HTML minifier",
-    bin: {
-      "minify-html-core": "./cli.js",
-    },
+    description: "Extremely fast and smart HTML minifier"
   },
   js: {
     name: "@min-html/js",
-    description: "Extremely fast and smart HTML + JS + CSS minifier",
-    bin: {
-      "minify-html": "./cli.js",
-    },
+    description: "Extremely fast and smart HTML + JS + CSS minifier"
   },
 }[process.argv[2]];
 

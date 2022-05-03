@@ -103,6 +103,8 @@ jobs:
           cp ../README.md .
           node package.json.gen.js ${{ matrix.feature }}
           sed -i -e 's/"node-gyp": "\^7.0.0",//g' package.json
+          sed -i -e 's/"build": "node-gyp build && shx mv build\/Release\/index\.node index\.node",//g' package.json
+          sed -i -e 's/"clean": "cd native && cargo clean && cd .. && node-gyp clean && node-gyp configure && shx rm -f index.node",//g' package.json
           cat package.json
           if [[ "${{ steps.version.outputs.VERSION }}" != "0.0.0" ]]; then
             npm publish --access public
