@@ -102,6 +102,8 @@ jobs:
           EOF
           cp ../README.md .
           node package.json.gen.js ${{ matrix.feature }}
+          sed -i -e 's/"node-gyp": "\^7.0.0",//g' package.json
+          cat package.json
           if [[ "${{ steps.version.outputs.VERSION }}" != "0.0.0" ]]; then
             npm publish --access public
           fi
