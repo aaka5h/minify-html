@@ -6,7 +6,7 @@ const common = {
   types: "index.d.ts",
   files: ["cli.js", "postinstall.js", "index.d.ts", "index.js", "binaries"],
   scripts: {
-    install: "shx ls",
+    install: "ls",
     build: "node-gyp rebuild && node-gyp build && shx mv build/Release/index.node index.node",
     clean:
       "cd native && cargo clean && cd .. && node-gyp clean && node-gyp configure && shx rm -f index.node",
