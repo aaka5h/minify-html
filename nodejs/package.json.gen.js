@@ -1,10 +1,10 @@
 const fs = require("fs");
 
 const common = {
-  version: "0.8.4",
+  version: "0.8.5",
   main: "index.js",
   types: "index.d.ts",
-  files: ["postinstall.js", "index.d.ts", "index.js", "binaries"],
+  files: ["postinstall.js", "index.d.ts", "index.js", "zip"],
   scripts: {
     build: "node-gyp build && shx mv build/Release/index.node index.node",
     clean:

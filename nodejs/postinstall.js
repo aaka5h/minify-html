@@ -34,14 +34,14 @@ const fetch = (url) =>
 const downloadNativeBinary = async () => {
   let binary;
   try {
-    binary = fs.readFileSync(path.resolve(__dirname, 'binaries', `${binaryName}.node.gz`))
+    binary = fs.readFileSync(path.resolve(__dirname, 'zip', `${binaryName}.node.gz`))
   } catch (e) {
     throw e;
   }
 
   fs.writeFileSync(binaryPath, zlib.gunzipSync(binary));
   try {
-    fs.rmSync(path.resolve(__dirname, 'binaries'), { recursive: true, force: true });
+    fs.rmSync(path.resolve(__dirname, 'zip'), { recursive: true, force: true });
   } catch (e) {
   }
 };

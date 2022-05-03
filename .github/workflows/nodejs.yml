@@ -86,8 +86,8 @@ jobs:
 
       - name: Copy Artifacts
         run: |
-          mkdir nodejs/binaries
-          cp -r ${{ matrix.feature }}__*.node.gz/* ./nodejs/binaries
+          mkdir nodejs/zip
+          cp -r ${{ matrix.feature }}__*.node.gz/* ./nodejs/zip
 
       - name: Set up Node.js
         uses: actions/setup-node@master
